@@ -18,7 +18,7 @@ namespace UnitTestProject1
         public void GetAllProducts_ReturnProductsById()
         {
             // Arrange
-            var productservice = Substitute.For<IProductService>();
+            var productservice =Substitute.For<IProductService>();
             int _id = 13860428;
             var productlist = productslist().Where(a => a.Id == _id).FirstOrDefault();
             productservice.GetById(_id).Returns(productlist);
