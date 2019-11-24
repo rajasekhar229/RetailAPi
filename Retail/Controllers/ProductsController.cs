@@ -16,57 +16,49 @@ namespace Retail.Controllers
         {
             _productService = productService;
         }
-
-        [HttpGet]
-        [Route("api/products")]
-        // GET: api/Product
-        public HttpResponseMessage AddDatatoliteDb()
-        {
-            var item = _productService.adddatatolitedb();
-
-            if (item.Count ==0)
-            {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
-
-            return Request.CreateResponse(HttpStatusCode.OK, item);
-        }
+ 
 
 
         [HttpGet]
-        [Route("api/products/{id}")]
+        [Route("products/{id}")]
         // GET: api/Product/5
         public HttpResponseMessage Get(int id)
         {
             var item = _productService.GetById(id);
-
+            item = _productService.GetProductNameandPrice(item, true);
             if (item == null)
             {
-                return Request.CreateResponse(HttpStatusCode.NotFound, id);
+                var message = string.Format("Product with id = {0} not found", id);
+                return Request.CreateResponse(HttpStatusCode.NotFound, message);
             }
-
-            string ProductName = _productService.GetProductName();
-            item.ProductName = ProductName; 
-
-            return Request.CreateResponse(HttpStatusCode.OK, item);
+             return Request.CreateResponse(HttpStatusCode.OK, item);
         }
 
 
         [HttpPut]
-        [Route("api/products/{id}")]
+        [Route("products/{id}")]
         // PUT: api/Product/5
         public HttpResponseMessage Put( [FromBody]Products products)
         {
             int id = products.Id;
-            var item = _productService.GetById(id);
+            // as we are adding our products through get by id 
+            // we need new method to check if id exists in lite db 
+            var item = _productService.GetByIdforupdate(id);
 
             if (item == null)
             {
-                return Request.CreateResponse(HttpStatusCode.NotFound, id);
+                var message = string.Format("Product with id = {0} not found", id);
+                return Request.CreateResponse(HttpStatusCode.NotFound, message);
             }
             else
             {
-               var updateditem = _productService.Update(products);
+
+                // we are not saving name in lite db we are getting from redsky 
+                products = _productService.GetProductNameandPrice(products, true);
+                //use this and comment above method
+                //if you want to save productname to database but only update price
+                //item.CurrentPrice["value"] = products.CurrentPrice["value"];
+                var updateditem = _productService.Update(products);
                 return Request.CreateResponse(HttpStatusCode.OK, updateditem);
             }
         }

@@ -9,7 +9,6 @@ namespace Retail.Models
     {
         public int Id { get; set; }
         public string ProductName { get; set; }
-        public Dictionary<string, string> CurrentPrice { get; set; }
-        //public Dictionary<double,string> CurrencyCode { get; set; }
+        public Dictionary<string, string> CurrentPrice { get; set; } 
     }
 }

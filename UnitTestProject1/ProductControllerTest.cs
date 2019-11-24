@@ -20,9 +20,9 @@ namespace UnitTestProject1
             // Arrange
             var productservice =Substitute.For<IProductService>();
             int _id = 13860428;
-            var productlist = productslist().Where(a => a.Id == _id).FirstOrDefault();
+            var productlist = Productslist().Where(a => a.Id == _id).FirstOrDefault();
             productservice.GetById(_id).Returns(productlist);
-            productservice.GetProductName().Returns(productlist.ProductName);
+            productservice.GetProductNameandPrice(productlist,true).Returns(productlist);
             var productcontroller = new ProductsController(productservice)
             {
                 Request = new HttpRequestMessage(),
@@ -30,13 +30,11 @@ namespace UnitTestProject1
             };
 
             // Act
-            var productswew = productcontroller.Get(_id).Content.ReadAsStringAsync().Result;
-            JObject jObject = JObject.Parse(productswew);
+            var productsfromcontroller = productcontroller.Get(_id).Content.ReadAsStringAsync().Result;
+            JObject jObject = JObject.Parse(productsfromcontroller);
 
-
-            Products product;
             var products = productcontroller.Get(_id);
-            Assert.IsTrue(products.TryGetContentValue<Products>(out product));
+            Assert.IsTrue(products.TryGetContentValue<Products>(out Products product));
 
             // Assert
             Assert.AreEqual(productlist.ProductName, product.ProductName);
@@ -49,9 +47,10 @@ namespace UnitTestProject1
             // Arrange
             var productservice = Substitute.For<IProductService>();
             int _id = 13860429;
-            var productlist = productslist().Where(a => a.Id == _id).FirstOrDefault();
+            var productlist = Productslist().Where(a => a.Id == _id).FirstOrDefault();
             productservice.GetById(_id).Returns(productlist);
-
+            productservice.GetByIdforupdate(_id).Returns(productlist);
+            productservice.GetProductNameandPrice(productlist, true).Returns(productlist);
             var productcontroller = new ProductsController(productservice)
             {
                 Request = new HttpRequestMessage(),
@@ -70,7 +69,7 @@ namespace UnitTestProject1
         }
 
 
-        private List<Products> productslist()
+        private List<Products> Productslist()
         {
             List<Products> prd = new List<Products>()
             {

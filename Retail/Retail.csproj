@@ -189,9 +189,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectResolver.cs" />
-    <Compile Include="Models\ProductForLiteDb.cs" />
     <Compile Include="Models\Products.cs" />
     <Compile Include="Models\ProductService.cs" />
+    <Compile Include="Models\ProductsLiteDb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
