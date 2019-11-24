@@ -12,7 +12,7 @@ using System.Web.Http;
 namespace UnitTestProject1
 {
     [TestClass]
-    public class UnitTest1
+    public class ProductControllerTest
     {
         [TestMethod]
         public void GetAllProducts_ReturnProductsById()
