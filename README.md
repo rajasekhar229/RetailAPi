@@ -15,6 +15,7 @@ Method               Request
  
  Technology Stack:
  
+ 
  1.Asp.net web api
  
  2.unit test--Nsubstitute
@@ -47,9 +48,10 @@ Method               Request
  
  Testing
  
+ 
  1 open solution in visual studio. Build it with no errors
 
-2. when you add products/id to your localhost url on browser.if the price and name of the product is not null from third party       server(redsky) it will be added to lite db
+2. when you add products/id to your localhost url on browser.if the price and name of the product is not null from third party        server(redsky) it will be added to lite db
 
 3.lite db will be added to your c drive if you are using macbook point it to the right folder.
 
