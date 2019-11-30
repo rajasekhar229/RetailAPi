@@ -62,5 +62,27 @@ namespace Retail.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, updateditem);
             }
         }
+        ////patch if you want only part to be updated
+        [HttpPatch]
+        [Route("products/{id}")]
+        public HttpResponseMessage PatchCustomer([FromBody] Products products)
+        {
+            int id = products.Id;
+            // as we are adding our products through get by id 
+            // we need new method to check if id exists in lite db 
+            var item = _productService.GetByIdforupdate(id);
+
+            if (item == null)
+            {
+                var message = string.Format("Product with id = {0} not found", id);
+                return Request.CreateResponse(HttpStatusCode.NotFound, message);
+            }
+            else
+            {
+                item.CurrentPrice["value"] = products.CurrentPrice["value"];
+                var updateditem = _productService.Update(item);
+                return Request.CreateResponse(HttpStatusCode.OK, updateditem);
+            }
+        }
     }
 }
