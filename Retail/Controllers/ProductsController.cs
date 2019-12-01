@@ -54,12 +54,12 @@ namespace Retail.Controllers
             {
 
                 // we are not saving name in lite db we are getting from redsky 
-                products = _productService.GetProductNameandPrice(products, true);
+                //products = _productService.GetProductNameandPrice(products, true);
                 //use this and comment above method
                 //if you want to save productname to database but only update price
-                //item.CurrentPrice["value"] = products.CurrentPrice["value"];
-                var updateditem = _productService.Update(products);
-                return Request.CreateResponse(HttpStatusCode.OK, updateditem);
+                item.CurrentPrice["value"] = products.CurrentPrice["value"];
+                var updateditem = _productService.Update(item);
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
         }
         ////patch if you want only part to be updated
@@ -70,8 +70,7 @@ namespace Retail.Controllers
             int id = products.Id;
             // as we are adding our products through get by id 
             // we need new method to check if id exists in lite db 
-            var item = _productService.GetByIdforupdate(id);
-
+            var item = _productService.GetByIdforupdate(id); 
             if (item == null)
             {
                 var message = string.Format("Product with id = {0} not found", id);
@@ -81,7 +80,7 @@ namespace Retail.Controllers
             {
                 item.CurrentPrice["value"] = products.CurrentPrice["value"];
                 var updateditem = _productService.Update(item);
-                return Request.CreateResponse(HttpStatusCode.OK, updateditem);
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
         }
     }

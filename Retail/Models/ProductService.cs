@@ -15,9 +15,9 @@ namespace Retail.Models
         public interface IProductService
         {
             Products GetById(int Id);
-            Products Update( Products product); 
+            ProductsLiteDb Update(ProductsLiteDb product); 
             Products GetProductNameandPrice(Products product,bool productname);
-            Products GetByIdforupdate(int Id);
+            ProductsLiteDb GetByIdforupdate(int Id);
         
         }
         public class Productservice : IProductService
@@ -67,14 +67,14 @@ namespace Retail.Models
                        return products;
                  }
             }
-            public Products GetByIdforupdate(int Id)
+            public ProductsLiteDb  GetByIdforupdate(int Id)
             {
                 try
                 { 
                     using (var db = new LiteDatabase(@"C:\litedb\MyData.db"))
                     {
                     // Get Product collection
-                    var products = db.GetCollection<Products>("Products")
+                    var products = db.GetCollection<ProductsLiteDb>("Products")
                                       .Find(x => x.Id == Id).FirstOrDefault();
                     return products;
                     }
@@ -86,12 +86,12 @@ namespace Retail.Models
             }
 
 
-            public Products Update(Products product)
+            public ProductsLiteDb Update(ProductsLiteDb product)
             {
                 using (var db = new LiteDatabase(@"C:\litedb\MyData.db"))
                 {
                     // Get products collection
-                    var products = db.GetCollection<Products>("Products")
+                    var products = db.GetCollection<ProductsLiteDb>("Products")
                                      .Update(product); 
                     return product; 
                 }

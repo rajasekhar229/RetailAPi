@@ -6,6 +6,7 @@ using Retail.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
@@ -49,8 +50,9 @@ namespace UnitTestProject1
             int _id = 13860429;
             var productlist = Productslist().Where(a => a.Id == _id).FirstOrDefault();
             productservice.GetById(_id).Returns(productlist);
-            productservice.GetByIdforupdate(_id).Returns(productlist);
-            productservice.GetProductNameandPrice(productlist, true).Returns(productlist);
+            ProductsLiteDb litedbproducts = new ProductsLiteDb { Id = productlist.Id, CurrentPrice = productlist.CurrentPrice };
+            productservice.GetByIdforupdate(_id).Returns(litedbproducts);
+            //productservice.GetProductNameandPrice(productlist, true).Returns(productlist);
             var productcontroller = new ProductsController(productservice)
             {
                 Request = new HttpRequestMessage(),
@@ -58,14 +60,13 @@ namespace UnitTestProject1
             };
 
             productlist.CurrentPrice["value"] = "50";
-            productservice.Update(productlist).Returns(productlist);
+            productservice.Update(litedbproducts).Returns(litedbproducts);
 
             // Act
-            var productswew = productcontroller.Put(productlist).Content.ReadAsStringAsync().Result;
-            JObject jObject = JObject.Parse(productswew);
+            var productswew = productcontroller.Put(productlist).StatusCode; 
 
             // Assert 
-            Assert.AreEqual(50, Convert.ToInt32(jObject["CurrentPrice"]["value"].ToString()));
+            Assert.AreEqual(HttpStatusCode.OK, productswew);
         }
 
 
